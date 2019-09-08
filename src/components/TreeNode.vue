@@ -12,14 +12,10 @@
              @dragleave.prevent.stop="dragLeave"
              @contextmenu="showContextMenu($event)">
             <transition name="rotateArrow">
-                <svg width="12"
-                     height="12"
-                     @click.prevent="toggle"
-                     class="tree-node-icon"
-                     v-if="hasChildren">
-                    <path d="M2 1 L10 6 L2 11 Z"
-                          class="svg-icon"/>
-                </svg>
+                <span>
+                    <i class="fa fa-plus" v-if="hasChildren && !expanded"/>
+                    <i class="fa fa-minus" v-else-if="hasChildren && expanded"/>
+                </span>
             </transition>
             <span class="tree-node-label"
                   @click="toggleSelection"
@@ -40,9 +36,6 @@
         </div>
         <div class="tree-node-children"
              v-show="expanded && data[childrenProp] && Array.isArray(data[childrenProp])">
-            <drop-between-zone @nodeDrop="dropNodeAtPosition(0)"
-                               v-if="!dropDisabled && draggedNode !== null && data[childrenProp] && draggedNode.data !== data[childrenProp][0]">
-            </drop-between-zone>
             <template v-for="(nodeData, index) in data[childrenProp]">
                 <tree-node
                         :data="nodeData"
@@ -62,10 +55,6 @@
                         @nodeDragStart="nodeDragStart"
                         @deleteNode="deleteChildNode">
                 </tree-node>
-                <drop-between-zone
-                        @nodeDrop="dropNodeAtPosition(index + 1)"
-                        v-if="!dropDisabled && draggedNode && draggedNode.data !== nodeData && (index + 1 >= data[childrenProp].length || draggedNode.data !== data[childrenProp][index + 1])">
-                </drop-between-zone>
             </template>
         </div>
     </div>
@@ -73,12 +62,10 @@
 
 <script>
     import EventBus from '../EventBus';
-    import DropBetweenZone from './DropBetweenZone.vue';
 
     export default {
         name: 'tree-node',
         components: {
-            DropBetweenZone
         },
         props: {
             data: {
