@@ -31,7 +31,6 @@
     import TreeNode from './TreeNode.vue';
     import EventBus from '../EventBus.js';
     import DropBetweenZone from './DropBetweenZone.vue'
-    import ContextMenu from './ContextMenu.vue'
 
     export default {
         props: {
@@ -100,7 +99,6 @@
         components: {
             TreeNode,
             DropBetweenZone,
-            ContextMenu
         },
         methods: {
             createNodeMap() {
